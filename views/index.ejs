@@ -1,0 +1,71 @@
+<% layout("layouts/boilerplate") -%>
+
+<div id="main-header" class="bg-dark p-3 rounded-lg">
+  <h1 class="display-4 my-2">IDIOT's SCHOOL</h1>
+  <p id="tagline">"Kamiyab hony k liye nahi.. Kabil hony k liye pedho..!"</p>
+</div>
+
+<!-- Details in Cards -->
+<section class="container mt-5">
+  <div class="row">
+    <!-- Total Students Card -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Students</h5>
+          <p class="card-text display-6"><%= data.studentCount %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Teachers Card -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Teachers</h5>
+          <p class="card-text display-6"><%= data.teacherCount %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Subject Card -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Courses</h5>
+          <p class="card-text display-6"><%= data.subjectCount %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Enrollment Card -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Enrollments</h5>
+          <p class="card-text display-6"><%= data.enrollmentCount %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Classes Card -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Classes</h5>
+          <p class="card-text display-6"><%= data.classCount %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Faculty Card -->
+    <div class="col-md-4 mb-4">
+      <div class="card bg-dark text-white text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Faculty</h5>
+          <p class="card-text display-6"><%= data.facultyCount %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

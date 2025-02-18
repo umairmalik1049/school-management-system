@@ -1,0 +1,61 @@
+<!-- Mobile Toggle Button -->
+<button
+  class="btn btn-dark d-lg-none fixed-top m-1"
+  type="button"
+  data-bs-toggle="offcanvas"
+  data-bs-target="#sidebar"
+  id="hambuger"
+>
+  <i class="bi bi-list"></i>
+</button>
+
+<!-- Sidebar Structure -->
+<div
+  class="offcanvas offcanvas-start bg-dark text-white d-lg-none"
+  tabindex="-1"
+  id="sidebar"
+  aria-labelledby="sidebarLabel"
+>
+  <div class="offcanvas-header">
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    <!-- Mobile Navigation -->
+    <nav class="nav flex-column">
+      <% const links = [ { href: '/', icon: 'house-door', text: 'Home' }, {
+      href: '/students', icon: 'people', text: 'Students' }, { href:
+      '/teachers', icon: 'person-badge', text: 'Teachers' }, { href:
+      '/subjects', icon: 'book', text: 'Subjects' }, { href: '/classes', icon:
+      'building', text: 'Classes' }, { href: '/enrollments', icon:
+      'clipboard-check', text: 'Enrollments' }, { href: '/faculty', icon:
+      'person-lines-fill', text: 'Faculty' } ]; %>
+      <!------------->
+      <% links.forEach(link => { %>
+      <a class="nav-link text-white sidebar-link" href="<%= link.href %>">
+        <i class="bi bi-<%= link.icon %> me-2"></i>
+        <%= link.text %>
+      </a>
+      <% }); %>
+    </nav>
+  </div>
+</div>
+
+<!-- Desktop Sidebar -->
+<div
+  class="col-lg-2 d-none d-lg-block bg-dark text-white vh-100 p-2 pt-5 position-fixed"
+>
+  <!-- Desktop Navigation -->
+  <nav class="nav flex-column">
+    <% links.forEach(link => { %>
+    <a class="nav-link text-white sidebar-link" href="<%= link.href %>">
+      <i class="bi bi-<%= link.icon %> me-2"></i>
+      <%= link.text %>
+    </a>
+    <% }); %>
+  </nav>
+</div>

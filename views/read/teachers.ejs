@@ -1,0 +1,29 @@
+<% layout("layouts/boilerplate") -%>
+
+<div class="container my-3 p-2">
+  <h2 class="mb-4">Teacher Data</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Education</th>
+          <th>Phone No</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(const tch of teachers) { %>
+        <tr>
+          <td><%= tch.teacher_id %></td>
+          <td><%= tch.full_name %></td>
+          <td><%= tch.education %></td>
+          <td><%= tch.phone_no %></td>
+          <td><%= tch.address %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>

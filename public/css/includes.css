@@ -1,0 +1,32 @@
+#hambuger {
+  width: fit-content;
+  height: fit-content;
+}
+
+.sidebar-link {
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  margin: 2px 0;
+}
+
+.sidebar-link:hover {
+  background: #4b545c !important;
+  transform: translateX(3px);
+}
+
+@media (min-width: 992px) {
+  .fixed-lg-left {
+    left: 0 !important;
+  }
+
+  main {
+    margin-left: 16.66666667%; /* Offset for fixed sidebar */
+  }
+}
+
+@media (max-width: 992px) {
+  main {
+    padding: 0;
+    padding-top: 48px !important;
+  }
+}
