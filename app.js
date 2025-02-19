@@ -50,7 +50,7 @@ app.get("/", async (req, res) => {
 
     res.render("index.ejs", { data });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -64,7 +64,7 @@ app.get("/students", async (req, res) => {
     const students = await dbQuery(query);
     res.render("read/students.ejs", { students });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -77,7 +77,7 @@ app.get("/teachers", async (req, res) => {
     const teachers = await dbQuery(query);
     res.render("read/teachers.ejs", { teachers });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -92,7 +92,7 @@ app.get("/subjects", async (req, res) => {
     const subjects = await dbQuery(query);
     res.render("read/subjects.ejs", { subjects });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -105,7 +105,7 @@ app.get("/classes", async (req, res) => {
     const classes = await dbQuery(query);
     res.render("read/classes.ejs", { classes });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -134,7 +134,7 @@ app.get("/enrollments", async (req, res) => {
       unenrolled,
     });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -147,7 +147,7 @@ app.get("/faculty", async (req, res) => {
     const faculty = await dbQuery(query);
     res.render("read/faculty.ejs", { faculty });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -182,7 +182,7 @@ app.get("/students/new", async (req, res) => {
     const classes = await dbQuery(query1);
     res.render("create/addStudent.ejs", { classes });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -201,7 +201,7 @@ app.post("/students", async (req, res) => {
     console.log("Student Added Successfully...!");
     res.redirect("/enrollments");
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -216,7 +216,7 @@ app.get("/students/:id", async (req, res) => {
     console.log("Student Deleted Successfully...!");
     res.redirect("/students");
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -236,7 +236,7 @@ app.get("/enrollments/:stdId/new", async (req, res) => {
 
     res.render("create/addEnrollment.ejs", { addStudent, subjects });
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
@@ -254,7 +254,7 @@ app.post("/enrollments", async (req, res) => {
     console.log("Enrollment Added Successfully...!");
     res.redirect("/enrollments");
   } catch (err) {
-    res.status(500).send("Database Error...!");
+    res.status(500).send("Database Error...!" + err);
   }
 });
 
