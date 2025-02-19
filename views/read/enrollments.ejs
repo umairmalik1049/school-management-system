@@ -1,27 +1,79 @@
 <% layout("layouts/boilerplate") -%>
 
 <div class="container my-3 p-2">
-  <h2 class="mb-4">Enrollment Data</h2>
+  <h2 class="mb-4">Enrollment Students</h2>
+
+  <!-- Button to trigger modal -->
+  <% if(unenrolled.length != 0) { %>
+  <button
+    type="button"
+    class="btn btn-sm btn-outline-dark mb-4 position-relative"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  >
+    New Students
+    <span
+      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+    >
+      <%= unenrolled.length %>
+    </span>
+  </button>
+  <% } %>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content pb-1">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Unenrolled Students
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body list-group p-0 rounded-0">
+          <% for(const unstd of unenrolled) { %>
+          <a
+            href="/enrollments/<%= unstd.student_id %>/new"
+            class="list-group-item list-group-item-action border-0 border-top"
+            >Student ID : <%= unstd.student_id %></a
+          >
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="table-responsive">
     <table class="table table-striped table-bordered">
       <thead class="table-dark">
         <tr>
-          <th>ID</th>
+          <th>Student ID</th>
           <th>Student Name</th>
-          <th>Subject Name</th>
+          <th>Enrolled Subjects</th>
           <th>Enroll Date</th>
         </tr>
       </thead>
       <tbody>
         <% for(const enl of enrollments) { const hireDate = new
-        Date(enl.enroll_date); const formattedDate =
+        Date(enl.enrollment_dates); const formattedDate =
         hireDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'short',
         day: '2-digit' }); %>
         <tr>
-          <td><%= enl.enroll_id %></td>
-          <td><%= enl.full_name %>th</td>
-          <td><%= enl.subject_name %></td>
-          <td><%= formattedDate %></td>
+          <td><%= enl.student_id %></td>
+          <td><%= enl.full_name %></td>
+          <td><%= enl.enrolled_subjects %></td>
+          <td><%= enl.enrollment_dates %></td>
         </tr>
         <% } %>
       </tbody>

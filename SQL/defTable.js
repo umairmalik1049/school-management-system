@@ -46,7 +46,7 @@ const defTable = async () => {
     student_id INT NOT NULL,
     subject_id INT NOT NULL,
     enroll_date DATE,
-    FOREIGN KEY (student_id) REFERENCES STUDENT(student_id),
+    FOREIGN KEY (student_id) REFERENCES STUDENT(student_id) ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES SUBJECT(subject_id)
     )`;
 

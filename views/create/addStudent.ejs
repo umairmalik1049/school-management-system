@@ -57,30 +57,32 @@
       </div>
     </div>
 
-    <div class="mb-3">
-      <label for="classSelect" class="form-label">Class</label>
-      <select
-        class="form-select"
-        id="classSelect"
-        aria-label="Default select example"
-        required
-        name="student[classId]"
-      >
-        <option value="">Select your class</option>
-        <% for(const cl of classes) { %>
-        <option value="<%= cl.class_id %>"><%= cl.class_level %>th</option>
-        <% } %>
-      </select>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="classSelect" class="form-label">Class</label>
+        <select
+          class="form-select"
+          id="classSelect"
+          aria-label="Default select example"
+          required
+          name="student[classId]"
+        >
+          <option value="">Select your class</option>
+          <% for(const cl of classes) { %>
+          <option value="<%= cl.class_id %>"><%= cl.class_level %>th</option>
+          <% } %>
+        </select>
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-sm btn-dark">Submit</button>
+    <button type="submit" class="btn btn-sm btn-dark mt-5">Submit</button>
   </form>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const dobInput = document.querySelector('input[type="date"]');
-    const ageInput = document.querySelector('input[type="number"]');
+    const dobInput = document.querySelector("#dob");
+    const ageInput = document.querySelector("#age");
 
     dobInput.addEventListener("change", function () {
       const dob = new Date(dobInput.value);

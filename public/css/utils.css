@@ -8,3 +8,11 @@ th,
 td {
   text-wrap: nowrap;
 }
+
+.fs-12 {
+  font-size: 12px;
+}
+
+.row-gap {
+  row-gap: 1.2rem;
+}

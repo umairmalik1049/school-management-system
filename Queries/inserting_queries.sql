@@ -56,10 +56,10 @@ VALUES
 
 INSERT INTO STUDENT (full_name, roll_no, age, date_of_birth, class_id)
 VALUES
-('Ayesha Ali', '9A-01', 14, '2010-05-15', 4),   -- Class 9
+('Ali Hamza', '9A-01', 14, '2010-05-15', 4),   -- Class 9
 ('Bilal Khan', '9A-02', 15, '2009-03-10', 4),  -- Class 9
-('Zainab Iqbal', '10B-03', 16, '2008-07-22', 5), -- Class 10
-('Hassan Javed', '12C-04', 18, '2006-01-12', 7); -- Class 12
+('Farooq Mumtaz', '10B-03', 16, '2008-07-22', 5), -- Class 10
+('Muhammad Junaid', '12C-04', 18, '2006-01-12', 7); -- Class 12
 
 #--------- Inserting into Enrollment Table
 
@@ -68,21 +68,21 @@ VALUES
 -- Ayesha (student_id=1) in Class 9 => English(1), Math(2), Physics(3)
 (1, 1, '2023-08-01'),
 (1, 2, '2023-08-01'),
-(1, 3, '2023-08-02'),
+(1, 3, '2023-08-01'),
 -- Bilal (student_id=2) in Class 9 => English(1), Math(2), Biology(5)
-(2, 1, '2023-08-01'),
-(2, 2, '2023-08-01'),
-(2, 5, '2023-08-03'),
+(2, 1, '2023-08-02'),
+(2, 2, '2023-08-02'),
+(2, 5, '2023-08-02'),
 -- Zainab (student_id=3) in Class 10 => English(1), Math(2), Physics(3), Chemistry(4)
-(3, 1, '2023-08-01'),
-(3, 2, '2023-08-01'),
-(3, 3, '2023-08-02'),
-(3, 4, '2023-08-02'),
+(3, 1, '2023-08-03'),
+(3, 2, '2023-08-03'),
+(3, 3, '2023-08-03'),
+(3, 4, '2023-08-03'),
 -- Hassan (student_id=4) in Class 12 => English(1), Physics(3), Chemistry(4), Biology(5)
-(4, 1, '2023-08-01'),
-(4, 3, '2023-08-01'),
-(4, 4, '2023-08-01'),
-(4, 5, '2023-08-01');
+(4, 1, '2023-08-04'),
+(4, 3, '2023-08-04'),
+(4, 4, '2023-08-04'),
+(4, 5, '2023-08-04');
 
 #--------- Inserting into Faculty Table
 

@@ -3,7 +3,7 @@
 <div class="container my-3 p-2">
   <div class="d-flex flex-column justify-content-center align-items-start mb-4">
     <h2>Student Data</h2>
-    <a href="/new" class="btn btn-outline-dark btn-sm">Add Student</a>
+    <a href="/students/new" class="btn btn-outline-dark btn-sm mt-2">Add Student</a>
   </div>
 
   <div class="table-responsive">
@@ -16,6 +16,7 @@
           <th>Class</th>
           <th>Age</th>
           <th>DOB</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,14 @@
           <td><%= std.class_level %>th</td>
           <td><%= std.age %></td>
           <td><%= formattedDate %></td>
+          <td class="text-center">
+            <a
+              href="/students/<%= std.student_id %>"
+              class="btn btn-outline-danger btn-sm"
+            >
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
         </tr>
         <% } %>
       </tbody>

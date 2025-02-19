@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS SCHOOL_MANAGEMENT_SYSTEM;
-USE SCHOOL_MANAGEMENT;
-DROP DATABASE SCHOOL_MANAGEMENT;
+USE SCHOOL_MANAGEMENT_SYSTEM;
+
+DROP DATABASE SCHOOL_MANAGEMENT_SYSTEM;
 
 # ---------- Class Table (1)
 
@@ -42,6 +43,9 @@ DESCRIBE SUBJECT;
 SELECT * FROM SUBJECT;
 TRUNCATE TABLE SUBJECT;
 
+SELECT * FROM SUBJECT JOIN TEACHER ON SUBJECT.teacher_id = TEACHER.teacher_id
+ORDER BY SUBJECT.subject_id;
+
 # ---------- Class_Subject Table (associative) (4)
 
 CREATE TABLE IF NOT EXISTS CLASS_SUBJECT (
@@ -75,6 +79,9 @@ DESCRIBE STUDENT;
 SELECT * FROM STUDENT;
 TRUNCATE TABLE STUDENT;
 
+DELETE FROM STUDENT
+WHERE student_id = 1;
+
 # ---------- Enrollment Table (associative) (6)
 
 CREATE TABLE IF NOT EXISTS ENROLLMENT (
@@ -82,18 +89,31 @@ CREATE TABLE IF NOT EXISTS ENROLLMENT (
     student_id INT NOT NULL,
     subject_id INT NOT NULL,
     enroll_date DATE,
-    FOREIGN KEY (student_id) REFERENCES STUDENT(student_id),
+    FOREIGN KEY (student_id) REFERENCES STUDENT(student_id) ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES SUBJECT(subject_id)
 );
-
-SELECT enroll_id, enroll_date, STUDENT.full_name, SUBJECT.subject_name
-FROM ENROLLMENT
-JOIN STUDENT ON ENROLLMENT.student_id = STUDENT.student_id
-JOIN SUBJECT ON ENROLLMENT.subject_id = SUBJECT.subject_id;
 
 DESCRIBE ENROLLMENT;
 SELECT * FROM ENROLLMENT;
 TRUNCATE TABLE ENROLLMENT;
+
+SELECT s.student_id, s.full_name, 
+GROUP_CONCAT(DISTINCT CONCAT(" ", sub.subject_name) ORDER BY sub.subject_name) AS enrolled_subjects,
+GROUP_CONCAT(DISTINCT CONCAT(" ", e.enroll_date) ORDER BY e.enroll_date) AS enrollment_dates
+FROM STUDENT s
+JOIN ENROLLMENT e ON s.student_id = e.student_id
+JOIN SUBJECT sub ON e.subject_id = sub.subject_id
+GROUP BY s.student_id, s.full_name;
+
+SELECT s.student_id
+FROM STUDENT s
+LEFT JOIN ENROLLMENT e ON s.student_id = e.student_id
+WHERE e.student_id IS NULL;
+
+SELECT COUNT(*) AS total_unenrolled
+FROM STUDENT s
+LEFT JOIN ENROLLMENT e ON s.student_id = e.student_id
+WHERE e.student_id IS NULL;
 
 # ---------- Faculty Table (7)
 
@@ -116,7 +136,6 @@ TRUNCATE TABLE FACULTY;
 
 # --------- Auto Increment set to 1
 
--- Auto Increment starting value ko set karne ke liye
 ALTER TABLE CLASS AUTO_INCREMENT = 1;
 ALTER TABLE TEACHER AUTO_INCREMENT = 1;
 ALTER TABLE SUBJECT AUTO_INCREMENT = 1;
@@ -124,6 +143,22 @@ ALTER TABLE CLASS_SUBJECT AUTO_INCREMENT = 1;
 ALTER TABLE STUDENT AUTO_INCREMENT = 1;
 ALTER TABLE ENROLLMENT AUTO_INCREMENT = 1;
 ALTER TABLE FACULTY AUTO_INCREMENT = 1;
+
+
+
+
+
+
+# ------- Delete all tables
+
+DROP TABLE FACULTY;
+DROP TABLE ENROLLMENT;
+DROP TABLE STUDENT;
+DROP TABLE CLASS_SUBJECT;
+DROP TABLE SUBJECT;
+DROP TABLE TEACHER;
+DROP TABLE CLASS;
+
 
 
 

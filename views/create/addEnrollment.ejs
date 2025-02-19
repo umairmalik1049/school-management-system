@@ -1,0 +1,168 @@
+<% layout("layouts/boilerplate") -%>
+
+<div class="container">
+  <h2 class="mt-3">Create Enrollment</h2>
+
+  <form class="mt-5" id="enrollmentForm" method="post" action="/enrollments">
+    <div class="row">
+      <!-- Student Fields -->
+      <div class="row row-gap mb-4">
+        <div class="col-md-6">
+          <label for="stdId">Student ID</label>
+          <input
+            type="number"
+            class="form-control"
+            id="stdId"
+            name="enroll[stdId]"
+            value="<%= addStudent[0].student_id %>"
+            readonly
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="classId">Class ID</label>
+          <input
+            type="number"
+            class="form-control"
+            id="classId"
+            name="enroll[classId]"
+            value="<%= addStudent[0].class_id %>"
+            readonly
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="stdName">Student Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="stdName"
+            name="enroll[stdName]"
+            value="<%= addStudent[0].full_name %>"
+            readonly
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="rollNo">Roll No</label>
+          <input
+            type="text"
+            class="form-control"
+            id="rollNo"
+            name="enroll[rollNo]"
+            value="<%= addStudent[0].roll_no %>"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Initial Subject Select Field -->
+      <div class="row row-gap" id="subjectFields">
+        <div class="col-md-6">
+          <label for="enrollDate" class="form-label">Enroll Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="enrollDate"
+            name="enroll[enrollDate]"
+            required
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="subjectSelect1" class="form-label">Subject 1</label>
+          <select
+            class="form-select subject-select"
+            id="subjectSelect1"
+            required
+            name="subjects[]"
+          >
+            <option value="">Select a subject</option>
+            <!-- Populate subject options here -->
+            <% for(const subject of subjects) { %>
+            <option value="<%= subject.subject_id %>">
+              <%= subject.subject_name %>
+            </option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button to Add More Subject Fields -->
+    <div class="mt-5 d-flex gap-2">
+      <button type="button" class="btn btn-dark" id="addSubject">
+        Add Subjects
+      </button>
+
+      <button type="submit" class="btn btn-outline-dark">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let subjectCount = 1;
+
+    // Function to update dropdown options
+    function updateDropdowns() {
+      const allSelects = document.querySelectorAll(".subject-select");
+      const selectedValues = new Set();
+
+      // Collect all selected values
+      allSelects.forEach((select) => {
+        if (select.value) {
+          selectedValues.add(select.value);
+        }
+      });
+
+      // Update each dropdown to exclude selected values
+      allSelects.forEach((select) => {
+        const currentValue = select.value;
+        Array.from(select.options).forEach((option) => {
+          if (
+            option.value &&
+            selectedValues.has(option.value) &&
+            option.value !== currentValue
+          ) {
+            option.style.display = "none"; // Hide the option
+          } else {
+            option.style.display = ""; // Show the option
+          }
+        });
+      });
+    }
+
+    // Add event listener to all subject selects
+    document.addEventListener("change", function (event) {
+      if (event.target.classList.contains("subject-select")) {
+        updateDropdowns();
+      }
+    });
+
+    // Add new subject field
+    document
+      .getElementById("addSubject")
+      .addEventListener("click", function () {
+        subjectCount++;
+        const newSubjectField = `
+          <div class="col-md-6">
+            <label for="subjectSelect${subjectCount}" class="form-label">Subject ${subjectCount}</label>
+            <select class="form-select subject-select" id="subjectSelect${subjectCount}" name="subjects[]">
+              <option value="">Select a subject</option>
+              <% for(const subject of subjects) { %>
+              <option value="<%= subject.subject_id %>"><%= subject.subject_name %></option>
+              <% } %>
+            </select>
+          </div>
+      `;
+        document
+          .getElementById("subjectFields")
+          .insertAdjacentHTML("beforeend", newSubjectField);
+        updateDropdowns(); // Update dropdowns after adding a new field
+      });
+
+    // Initial call to set up dropdowns
+    updateDropdowns();
+  });
+</script>
