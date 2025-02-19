@@ -157,6 +157,38 @@ app.get("/drop/data", async (req, res) => {
   }
 });
 
+// ------ Students POST Route & Form GET Route
+
+app.get("/new", async (req, res) => {
+  const query1 = "SELECT * FROM CLASS";
+
+  try {
+    const classes = await dbQuery(query1);
+    res.render("create/addStudent.ejs", { classes });
+  } catch (err) {
+    res.status(500).send("Database Error...!");
+  }
+});
+
+app.post("/students", async (req, res) => {
+  const std = req.body.student;
+
+  const query = `INSERT INTO STUDENT (full_name, roll_no, age, date_of_birth, class_id) VALUES
+  ('${std.fullName}',
+  '${std.rollNo}',
+  ${Number(std.age)},
+  '${std.dob}',
+  ${Number(std.classId)})`;
+
+  try {
+    await dbQuery(query);
+    console.log("Student Added Successfully...!");
+    res.redirect("/students");
+  } catch (err) {
+    res.status(500).send("Database Error...!");
+  }
+});
+
 // ------------ Setting up Server
 
 const port = process.env.PORT || 8000;
