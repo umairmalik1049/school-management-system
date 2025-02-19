@@ -8,9 +8,10 @@ dotenv.config();
 // ----------- Database Connection
 require("./SQL/dbConnection.js");
 const { dbQuery } = require("./SQL/dbFuncs.js");
-require("./SQL/defTable.js");
+const { createTables } = require("./SQL/defTable.js");
 const { insertData } = require("./SQL/initDumy.js");
 const { delData } = require("./SQL/delData.js");
+const { delTables } = require("./SQL/delTables.js");
 
 // ----------- Setting up packages
 app.engine("ejs", ejsMate);
@@ -50,7 +51,7 @@ app.get("/", async (req, res) => {
 
     res.render("index.ejs", { data });
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Database Error...!\n" + err);
   }
 });
 
@@ -64,7 +65,7 @@ app.get("/students", async (req, res) => {
     const students = await dbQuery(query);
     res.render("read/students.ejs", { students });
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Database Error...!\n" + err);
   }
 });
 
@@ -77,7 +78,7 @@ app.get("/teachers", async (req, res) => {
     const teachers = await dbQuery(query);
     res.render("read/teachers.ejs", { teachers });
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Database Error...!\n" + err);
   }
 });
 
@@ -92,7 +93,7 @@ app.get("/subjects", async (req, res) => {
     const subjects = await dbQuery(query);
     res.render("read/subjects.ejs", { subjects });
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Database Error...!\n" + err);
   }
 });
 
@@ -105,7 +106,7 @@ app.get("/classes", async (req, res) => {
     const classes = await dbQuery(query);
     res.render("read/classes.ejs", { classes });
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Database Error...!\n" + err);
   }
 });
 
@@ -134,7 +135,7 @@ app.get("/enrollments", async (req, res) => {
       unenrolled,
     });
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Database Error...!\n" + err);
   }
 });
 
@@ -147,7 +148,92 @@ app.get("/faculty", async (req, res) => {
     const faculty = await dbQuery(query);
     res.render("read/faculty.ejs", { faculty });
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Database Error...!\n" + err);
+  }
+});
+
+// ------ Students POST Route & Form GET Route
+
+app.get("/students/new", async (req, res) => {
+  const query1 = "SELECT * FROM CLASS";
+
+  try {
+    const classes = await dbQuery(query1);
+    res.render("create/addStudent.ejs", { classes });
+  } catch (err) {
+    res.status(500).send("Database Error...!\n" + err);
+  }
+});
+
+app.post("/students", async (req, res) => {
+  const std = req.body.student;
+
+  const query = `INSERT INTO STUDENT (full_name, roll_no, age, date_of_birth, class_id) VALUES
+  ('${std.fullName}',
+  '${std.rollNo}',
+  ${Number(std.age)},
+  '${std.dob}',
+  ${Number(std.classId)})`;
+
+  try {
+    await dbQuery(query);
+    console.log("Student Added Successfully...!");
+    res.redirect("/enrollments");
+  } catch (err) {
+    res.status(500).send("Database Error...!\n" + err);
+  }
+});
+
+// ------------ Students DELETE Route
+
+app.get("/students/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = `DELETE FROM STUDENT WHERE student_id = ${Number(id)}`;
+
+  try {
+    await dbQuery(query);
+    console.log("Student Deleted Successfully...!");
+    res.redirect("/students");
+  } catch (err) {
+    res.status(500).send("Database Error...!\n" + err);
+  }
+});
+
+// ------------ Enrollment POST Route & Form GET Route
+
+app.get("/enrollments/:stdId/new", async (req, res) => {
+  const studentID = req.params.stdId;
+
+  const query1 = `SELECT * FROM STUDENT
+  WHERE student_id = ${Number(studentID)}`;
+
+  const query2 = `SELECT * FROM SUBJECT`;
+
+  try {
+    const addStudent = await dbQuery(query1);
+    const subjects = await dbQuery(query2);
+
+    res.render("create/addEnrollment.ejs", { addStudent, subjects });
+  } catch (err) {
+    res.status(500).send("Database Error...!\n" + err);
+  }
+});
+
+app.post("/enrollments", async (req, res) => {
+  const { enroll, subjects } = req.body;
+
+  let query = `INSERT INTO ENROLLMENT (student_id, subject_id, enroll_date) VALUES `;
+  for (let i = 0; i < subjects.length && subjects[i] !== ""; i++) {
+    query += `(${enroll.stdId},${Number(subjects[i])},'${enroll.enrollDate}'),`;
+  }
+  query = query.slice(0, -1); // to remove last comma
+
+  try {
+    await dbQuery(query);
+    console.log("Enrollment Added Successfully...!");
+    res.redirect("/enrollments");
+  } catch (err) {
+    res.status(500).send("Database Error...!\n" + err);
   }
 });
 
@@ -173,88 +259,15 @@ app.get("/drop/data", async (req, res) => {
   }
 });
 
-// ------ Students POST Route & Form GET Route
+// ------------ All Tables DELETE Route
 
-app.get("/students/new", async (req, res) => {
-  const query1 = "SELECT * FROM CLASS";
-
+app.get("/drop/tables", async (req, res) => {
   try {
-    const classes = await dbQuery(query1);
-    res.render("create/addStudent.ejs", { classes });
+    await delTables();
+    await createTables();
+    res.redirect("/");
   } catch (err) {
-    res.status(500).send("Database Error...!" + err);
-  }
-});
-
-app.post("/students", async (req, res) => {
-  const std = req.body.student;
-
-  const query = `INSERT INTO STUDENT (full_name, roll_no, age, date_of_birth, class_id) VALUES
-  ('${std.fullName}',
-  '${std.rollNo}',
-  ${Number(std.age)},
-  '${std.dob}',
-  ${Number(std.classId)})`;
-
-  try {
-    await dbQuery(query);
-    console.log("Student Added Successfully...!");
-    res.redirect("/enrollments");
-  } catch (err) {
-    res.status(500).send("Database Error...!" + err);
-  }
-});
-
-// ------------ Students DELETE Route
-
-app.get("/students/:id", async (req, res) => {
-  const id = req.params.id;
-  const query = `DELETE FROM STUDENT WHERE student_id = ${Number(id)}`;
-
-  try {
-    await dbQuery(query);
-    console.log("Student Deleted Successfully...!");
-    res.redirect("/students");
-  } catch (err) {
-    res.status(500).send("Database Error...!" + err);
-  }
-});
-
-// ------------ Enrollment POST Route & Form GET Route
-
-app.get("/enrollments/:stdId/new", async (req, res) => {
-  const studentID = req.params.stdId;
-
-  const query1 = `SELECT * FROM STUDENT
-  WHERE student_id = ${Number(studentID)}`;
-
-  const query2 = `SELECT * FROM SUBJECT`;
-
-  try {
-    const addStudent = await dbQuery(query1);
-    const subjects = await dbQuery(query2);
-
-    res.render("create/addEnrollment.ejs", { addStudent, subjects });
-  } catch (err) {
-    res.status(500).send("Database Error...!" + err);
-  }
-});
-
-app.post("/enrollments", async (req, res) => {
-  const { enroll, subjects } = req.body;
-
-  let query = `INSERT INTO ENROLLMENT (student_id, subject_id, enroll_date) VALUES `;
-  for (let i = 0; i < subjects.length && subjects[i] !== ""; i++) {
-    query += `(${enroll.stdId},${Number(subjects[i])},'${enroll.enrollDate}'),`;
-  }
-  query = query.slice(0, -1); // to remove last comma
-
-  try {
-    await dbQuery(query);
-    console.log("Enrollment Added Successfully...!");
-    res.redirect("/enrollments");
-  } catch (err) {
-    res.status(500).send("Database Error...!" + err);
+    res.status(500).send("Error in Deleting Tables...!\n" + err);
   }
 });
 

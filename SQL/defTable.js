@@ -1,6 +1,6 @@
 const { dbQuery } = require("./dbFuncs.js");
 
-const defTable = async () => {
+const createTables = async () => {
   const classTB = `CREATE TABLE IF NOT EXISTS CLASS (
     class_id INT AUTO_INCREMENT PRIMARY KEY,
     class_name VARCHAR(50) NOT NULL,
@@ -74,4 +74,6 @@ const defTable = async () => {
   }
 };
 
-defTable();
+createTables();
+
+module.exports = { createTables };
